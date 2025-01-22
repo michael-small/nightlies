@@ -1,13 +1,13 @@
-import { JsonPipe } from '@angular/common';
 import { Component, VERSION } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { UntaggedTemplatesComponent } from './untagged-templates.component';
 
 @Component({
   selector: 'app-root',
   template: `
-    <pre>{{version | json}}</pre>
+    <app-untagged-templates />
+    <pre>{{version.full}}</pre>
   `,
-  imports: [JsonPipe]
+  imports: [UntaggedTemplatesComponent]
 })
 export class AppComponent {
   version = VERSION;
