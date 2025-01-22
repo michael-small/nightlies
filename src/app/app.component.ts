@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { Component, VERSION } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  template: `
+    <pre>{{version | json}}</pre>
+  `,
+  imports: [JsonPipe]
 })
 export class AppComponent {
-  title = 'nightlies';
+  version = VERSION;
 }
