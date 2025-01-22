@@ -1,11 +1,12 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, computed, resource, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { BehaviorSubject } from 'rxjs';
+import { rxResource, toObservable } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { BehaviorSubject, debounce, debounceTime, distinctUntilChanged, map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-resource-stream',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, FormsModule, JsonPipe],
   template: `
     <h2><code>rxResource</code></h2>
     <div class="stream-and-resource">
@@ -28,6 +29,11 @@ import { BehaviorSubject } from 'rxjs';
     </div>
     <button (click)="stream.set({value: value + 1})">Increment <code>stream()</code></button>
     <button (click)="stream.set({error: 'oh no!'})">Set stream to errored</button>
+
+    <h2>Typeaheads now work with resources!</h2>
+    <label for="typeahead">Typeahead</label>
+    <input name="typeahead" type="text" [(ngModel)]="typeaheadValue"/>
+    <pre>typeaheadderivedoptions: {{typeaheadDerivedOptions.value() | json}}</pre>
   `,
   styles: `
     .stream-and-resource {
@@ -46,4 +52,15 @@ export class ResourceStreamComponent {
     resResource = resource({
       stream: async () => this.stream,
     });
+
+    typeaheadValue = signal('')
+    typeaheadOptionsStream$ = toObservable(this.typeaheadValue).pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        map((res) => [`${res}1`, `${res}2`, `${res}3`])
+    );
+
+    typeaheadDerivedOptions = rxResource({
+        loader: () => this.typeaheadOptionsStream$
+    })
 }
