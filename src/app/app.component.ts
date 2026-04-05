@@ -1,5 +1,5 @@
 import { Component, VERSION } from '@angular/core';
-import { FormsWithSignalsDocPage } from './signal-forms/forms-with-signals-doc-page';
+import { FormsWithSignalsDocPage } from './signal-forms/basic-tutorial/forms-with-signals-doc-page';
 
 @Component({
   selector: 'app-root',
