@@ -11,20 +11,35 @@ interface LoginData {
   imports: [FormField, FormRoot],
   styleUrls: ['./forms-with-signals-doc-page.css'],
   template: `
-    <a href="https://angular.dev/essentials/signal-forms" target="_blank">doc page</a>
     <form [formRoot]="loginForm">
-      <input type="email" [formField]="loginForm.email" />
-      @if (loginForm.email().touched() && loginForm.email().invalid()) {
-        <ul class="error-list">
-          @for (error of loginForm.email().errors(); track error) {
-            <li>{{ error.message }}</li>
-          }
-        </ul>
-      }
-      <input type="password" [formField]="loginForm.password" />
+      <div>
+        <label>
+          Email:
+          <input type="email" [formField]="loginForm.email" />
+        </label>
+        @if (loginForm.email().touched() && loginForm.email().invalid()) {
+          <ul class="error-list">
+            @for (error of loginForm.email().errors(); track error) {
+              <li>{{ error.message }}</li>
+            }
+          </ul>
+        }
+      </div>
+      <div>
+        <label>
+          Password:
+          <input type="password" [formField]="loginForm.password" />
+        </label>
+        @if (loginForm.password().touched() && loginForm.password().invalid()) {
+          <div class="error-list">
+            @for (error of loginForm.password().errors(); track error) {
+              <p>{{ error.message }}</p>
+            }
+          </div>
+        }
+      </div>
+      <button type="submit">Log In</button>
     </form>
-
-    <p>Email: {{ loginForm.email().value() }}</p>
   `,
 })
 export class FormsWithSignalsDocPage {
